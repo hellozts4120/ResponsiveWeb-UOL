@@ -1,0 +1,20 @@
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+.container {
+    border: 2px solid black;
+}
+
+h1 {
+    border-bottom: 2px solid red;
+}
+
+h2 {
+    font-family: "Microsoft Yahei";
+    text-shadow: 2px 2px 2px gold;
+}

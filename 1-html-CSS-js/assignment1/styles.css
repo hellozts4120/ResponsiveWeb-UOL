@@ -1,0 +1,5 @@
+h1 {
+    color: green;   /* change the color of h1's text */
+    font-family: "Microsoft YaHei";     /* change font family of h1 */
+    font-size: 30px;    /* change the size of h1's text */
+}
