@@ -1,0 +1,92 @@
+<!-- This is a first example of using a template -->
+
+<head>
+
+<!-- include our libraries and css files -->
+
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/handlebars-v3.0.3.js"></script>
+
+<script src="js/bootstrap.min.js"></script>
+<script src="AnimalsData.js"></script>
+<script src="assignment.js"></script>
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="assignment.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- put your HTML here -->
+    <div class="container">
+        <div class="page-header">
+            <h1>Animals' Data</h1>
+        </div>
+        
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#" id="categories-tab">Categories</a></li>
+            <li><a href="#" id="animals-tab">Animals</a></li>
+        </ul>
+        
+        <div class="container" id="content" role="main"></div>
+    </div>
+    
+    <script id="categories-template" type="text/x-handlebars-template">
+    
+        <div class="row">
+        
+            {{#each category}}
+            <div class="col-xs-12 col-md-3">
+                <div class="category-thumbnail" data-id="{{@index}}">
+                    <img class="animal-img" src="{{animals.0.image1}}">
+                    <div class="caption">
+                        <h4>{{name}}</h4>
+                        <p>{{animals.length}} animals</p>
+                    </div>
+                </div>
+            </div>    
+            {{/each}}
+            
+        </div>
+        
+    </script>
+    
+    <script id="animals-template" type="text/x-handlebars-template">
+    
+        <div class="row">
+
+            {{#each animals}}
+            <div class="col-xs-12 col-md-3">
+                <div class="animal-thumbnail" data-id="{{@index}}">
+                    <img class="animal-img" src="{{image1}}">
+                    <div class="caption">
+                        <h4>{{name}}</h4>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+
+        </div>
+        
+    </script>
+    
+    <script id="animal-template" type="text/x-handlebars-template">
+    
+        <div class="row">
+
+            <div class="col-xs-12 col-md-6">
+                <img class="large-img" src="{{image1}}">
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <img class="large-img" src="{{image2}}">
+            </div>
+            <div class="col-xs-12">
+                <h2>{{name}}</h2>
+                <p>{{description}}</p>
+            </div>
+        </div>
+        
+    </script>
+
+</body>

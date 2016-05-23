@@ -1,0 +1,14 @@
+/* put your css code here */
+#content {
+    margin: 30px 0;
+}
+
+.animal-img {
+    height: 200px;
+    width: 100%;
+}
+
+.large-img {
+    width: 100%;
+    height: 400px;
+}
