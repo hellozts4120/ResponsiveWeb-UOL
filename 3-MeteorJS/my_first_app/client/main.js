@@ -1,0 +1,8 @@
+import { Template } from 'meteor/templating';
+import { ReactiveVar } from 'meteor/reactive-var';
+
+import './main.html';
+
+if (Meteor.isClient) {
+    Template.hello.helpers({time:new Date()});
+}
