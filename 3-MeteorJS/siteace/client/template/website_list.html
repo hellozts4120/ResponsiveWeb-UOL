@@ -1,0 +1,51 @@
+<!-- template that displays several website items -->
+<template name="website_list">
+    <div class="container">
+        <div class="row addPad">
+            <div class="col-xs-12">
+                <a tabindex="0" class="btn btn-default js-toggle-website-form" role="button" data-toggle="popover" data-trigger="focus" data-content="Please login in order to add new websites" href="#">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </a>
+                {{#if searchOn}}
+                <a href="#" class="btn btn-default js-clear-search">Show all</a>
+                {{/if}}
+            </div>
+        </div>
+        {{>website_form}}
+        {{#each websites}}
+            {{>website_item}}
+        {{/each}}
+    </div>
+</template>
+
+<template name="website_item">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title"><h4><a href="{{url}}" title="Follow to">{{title}}</a></h4></div>
+        </div>
+        <div class="panel-body js-website_item">
+            <div class="row">
+                <div class="col-xs-1">
+                    <span class="goToDetails" title="Click to see details.">
+                        <img class="media-object icon" src="{{getLogo url}}">
+                    </span>
+                </div>
+                <div class="col-xs-11">
+                    <span class="goToDetails" title="Click to see details.">
+                        <h3>{{title}}</h3>
+                    </span>
+                    <h5>{{description}}</h5>
+                    {{#if getDate}}
+                        <p>Added in: {{getDate}} by {{getAuthor createdBy}}</p>
+                    {{/if}}
+                    <a href="#" id="upvote-{{_id}}" tabindex="0" class="btn btn-primary js-upvote" role="button" data-toggle="popover" data-trigger="focus" data-content="In order to vote you must be a registered user">
+                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span><span class="votesText">{{totalUpvotes}}</span>
+                    </a>
+                    <a href="#" id="downvote-{{_id}}" tabindex="0" class="btn btn-warning js-downvote" role="button" data-toggle="popover" data-trigger="focus" data-content="In order to vote you must be a registered user">
+                        <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span><span class="votesText">{{totalDownvotes}}</span>
+                    </a>
+                </div>
+            </div>
+        </div> 
+    </div>
+</template>
