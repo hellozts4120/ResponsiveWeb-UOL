@@ -12,7 +12,7 @@ Websites.allow({
 	},
     
     update: function(userId, doc) {
-		if (Meteor.user() && userId == doc.createdBy){
+		if (Meteor.user()){
 			return true;
 		} else {
 			return false;

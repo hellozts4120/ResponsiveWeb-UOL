@@ -6,29 +6,29 @@ Router.configure({
 
 Router.route('/', function () {
   this.render('navbar', {
-    to:"main"
+    to: "navbar"
   });
   this.render('welcome', {
-    to:"main"
+    to: "main"
   });
 });
 
 Router.route('/websites', function () {
   this.render('navbar', {
-    to:"navbar"
+    to: "navbar"
   });
   this.render('website_list', {
-    to:"main"
+    to: "main"
   });
 });
 
 Router.route('/websites/:_id', function () {
   this.render('navbar', {
-    to:"navbar"
+    to: "navbar"
   });
   this.render('website_detail', {
-    to:"main", 
-    data:function(){
+    to: "main", 
+    data: function() {
       return Websites.findOne({_id:this.params._id});
     }
   });

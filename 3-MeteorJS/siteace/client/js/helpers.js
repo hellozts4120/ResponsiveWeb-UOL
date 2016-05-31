@@ -12,15 +12,15 @@ Template.website_list.helpers({
         var searchValue = Session.get("searchValue");		
         var upvotes, downvotes;
         if (searchValue == undefined || searchValue == "" || searchValue == null) {
-            return Website.find({}, {sort: {rate:-1}});
+            return Websites.find({}, {sort: {rate:-1}});
         }
         else {
-            return Website.find(
+            return Websites.find(
                 {$or: [{"title": {$regex : ".*"+searchValue+".*"}},
                        {"url": {$regex : ".*"+searchValue+".*"}},
                        {"description": {$regex : ".*"+searchValue+".*"}}
                       ]
-                }, {sort:{rate:-1}});
+                }, {sort:{rate:-1}}
             );
         }
     },
@@ -63,7 +63,31 @@ Template.website_item.helpers({
 });
 
 Template.website_detail.helpers({
-    
+    getDate:function(){
+        return this.createdOn ? this.createdOn.toString("dd-MM-yyyy") : false;
+        
+    },
+    getAuthor:function(createdBy){
+        if (createdBy) {
+            return Meteor.users.findOne({_id: createdBy}).username
+        } 
+        else {
+            return "Default";
+        }
+    },
+    comments:function(){
+        return Comments.find({websiteId: this._id});
+    },
+    getLogo:function(url){
+        var link = url.split("//")[1].split("/")[0];
+        return "http://"+link+"/favicon.ico";
+    }
+});
+
+Template.comments_list.helpers({
+    getUser:function(createdBy){
+        return Meteor.users.findOne({_id: createdBy}).username
+    }
 });
 
 function getVotedStatus(object) {

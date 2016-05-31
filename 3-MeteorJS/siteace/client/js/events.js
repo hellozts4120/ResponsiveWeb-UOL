@@ -27,27 +27,27 @@ Template.website_item.events({
     "click .js-upvote": function(event) {
         var that = this;
         if (Meteor.user()) {
-            var id = Meteor.user()._id;
-            if ($.inArray(id, that.upvotes) == -1) {
-                Websites.update({_id: object._id}, {$push: {upvotes: userId}});
-                Websites.update({_id: object._id}, {$set: {rate: Websites.findOne({_id: object._id}).upvotes.length + 1}});
-                Websites.update({_id: object._id}, {$pull: {downvotes: userId}});
+            var userId = Meteor.user()._id;
+            if ($.inArray(userId, that.upvotes) == -1) {
+                Websites.update({_id: that._id}, {$push: {upvotes: userId}});
+                Websites.update({_id: that._id}, {$set: {rate: Websites.findOne({_id: that._id}).upvotes.length + 1}});
+                Websites.update({_id: that._id}, {$pull: {downvotes: userId}});
             }
             else {
-                Websites.update({_id: object._id}, {$pull: {upvotes: userId}});
-                Websites.update({_id: object._id}, {$set: {rate: Websites.findOne({_id: object._id}).upvotes.length - 1}});
+                Websites.update({_id: that._id}, {$pull: {upvotes: userId}});
+                Websites.update({_id: that._id}, {$set: {rate: Websites.findOne({_id: that._id}).upvotes.length - 1}});
             }
         }
         else {
-            $('#upvote-'+object._id).popover('toggle');
+            $('#upvote-' + that._id).popover('toggle');
         }
         return false;
     },
     "click .js-downvote": function(event) {
         var that = this;
         if (Meteor.user()) {
-            var id = Meteor.user()._id;
-            if ($.inArray(id, that.upvotes) == -1) {
+            var userId = Meteor.user()._id;
+            if ($.inArray(userId, that.downvotes) == -1) {
                 Websites.update({_id: that._id}, {$push: {downvotes: userId}});
                 Websites.update({_id: that._id}, {$set: {rate: Websites.findOne({_id: that._id}).downvotes.length + 1}});
                 Websites.update({_id: that._id}, {$pull: {upvotes: userId}});
@@ -101,5 +101,169 @@ Template.website_item.events({
 });
 
 Template.website_detail.events({
-    
+    "click .js-save-comment": function() {
+        $("#btn-submit").removeClass("hide");
+    },
+    "submit .js-save-comment": function(event) {
+        if (Meteor.user()) {
+            $("#notLoggedIn").hide();
+            if (event.target.input_comment.value) {
+                Comments.insert({
+                    websiteId: this._id,
+                    comment_body: event.target.input_comment.value,
+                    createdOn: new Date(),
+                    createdBy: Meteor.user()._id
+                });
+            }
+        }
+        else {
+            $("#notLoggedIn").show();
+        }
+        return false;
+    },
+    "click .js-delete-website": function(event) {
+        if (Meteor.user()) {
+            if (Meteor.user()._id == this.createdBy) {
+                Websites.remove({_id: this._id});
+                var commentsOfDeleteSite = Comments.find({websiteId: this._id});
+                for (var i = 0; i < commentsOfDeleteSite.length; i++) {
+                    Comments.remove({_id: commentsOfDeleteSite[i]._id});
+                }
+                window.location = "/websites";
+            }
+            else {
+                $(".js-delete-website").attr("title", "Can't delete sites that others output!");
+            }
+        }
+        else {
+            $(".js-delete-website").attr("title", "Login in to delete site!");
+        }
+    },
+    "mouseover .js-delete-website":function(event){
+        if (Meteor.user()) {
+            if (Meteor.user()._id == this.createdBy) {
+                $('.js-delete-website').attr('title', "Delete this website. Warning! This will also delete all comments about this website.");
+            } else {
+                $('.js-delete-website').attr('title', "Can't delete sites that others output!");
+            }
+        } else {
+            $('.js-delete-website').attr('title', "Login in to delete websites.");
+        }		
+    }
 });
+
+Template.comments_list.events({
+    "click .js-delete-comment": function(event) {
+        if (Meteor.user()) {
+            if (Meteor.user()._id == this.createdBy) {
+                Comments.remove({_id: this._id});
+            }
+            else {
+                $('.js-delete-comment').attr('title', "Can't delete sites that others output!");
+            }
+        }
+        else {
+            $('.js-delete-comment').attr('title', "Login in to delete websites.");
+        }
+    },
+    "mouseover .js-delete-comment":function(event){
+        if (Meteor.user()) {
+            if (Meteor.user()._id == this.createdBy) {
+                $('.js-delete-comment').attr('title', "Delete comment.");;
+            } else {
+                $('.js-delete-comment').attr('title', "Can't delete sites that others output!");
+            }
+        } else {
+            $('.js-delete-comment').attr('title', "Login in to delete websites.");
+        }		
+    }
+});
+
+Template.website_form.events({
+    "submit .js-save-website-form":function(event){
+        var title, logoURL;
+        if (!event.target.url.value){
+            $("#url_formGroup").addClass('has-error');
+            $("#url").attr("placeholder", "Must add an URL");
+        } else if (!event.target.description.value) {
+            $("#description_formGroup").addClass('has-error');
+            $("#description").attr("placeholder", "Must add a description");
+        } else {
+            if (event.target.title.value) {
+                title = event.target.title.value;
+            } else {
+                title = event.target.url.value;
+            }
+            if (Meteor.user()){
+                Websites.insert({
+                    title: title, 
+                    url: event.target.url.value, 
+                    description: event.target.description.value, 
+                    createdBy: Meteor.user()._id,
+                    createdOn: new Date()
+                });		
+            }
+            $("#website_form").modal('hide');			
+        }
+        
+        return false;// stop the form submit from reloading the page
+
+    },
+    "keyup #url":function(event){
+        $('.js-reatriveData').click();
+    },
+    "click .js-reatriveData":function(event){
+        var url = $("#url").val();
+        if (url.substring(0,7).toLowerCase() != "http://"){
+            url = "http://"+url;
+            $("#url").val(url);
+        }
+        Meteor.call("getResponse", url, function(error, data){
+            if (error){
+                $("#retrieveAlert").text('Impossible to retrieve information.').addClass("text-warning");
+            } else {
+                if (data != undefined){
+                    var str = data.content;
+                    var el = document.createElement('html');
+                    el.innerHTML = data.content;
+                    var tagTitle = el.getElementsByTagName('title');
+                    if (tagTitle[0] != undefined){
+                        var title = tagTitle[0].text;
+                    }
+                    var tagMeta = el.getElementsByTagName('meta');
+                    if (tagMeta.description != undefined){
+                        var description = tagMeta.description.content;
+                    }
+                    if (title == null || title == ""){
+                        $('#title').val('');
+                        $('#description').val(description);
+                        $('#title').parent('.form-group').addClass('has-error has-feedback').removeClass('has-success');
+                        $('#description').parent('.form-group').addClass('has-success').removeClass('has-error has-feedback');
+                        $("#retrieveAlert").addClass('alert-warning').text('It was impossible to retrieve all info. Please add before submit.').show();
+                    } else if (description == null || description == "") {
+                        $('#title').val(title);
+                        $('#description').val('');
+                        $('#title').parent('.form-group').addClass('has-success').removeClass('has-error has-feedback');
+                        $('#description').parent('.form-group').addClass('has-error has-feedback').removeClass('has-success');
+                        $("#retrieveAlert").addClass('alert-warning').text('It was impossible to retrieve all info. Please add before submit.').show();
+                    } else {
+                        $('#title').val(title);
+                        $('#description').val(description);
+                        $('#title').parent('.form-group').addClass('has-success').removeClass('has-error has-feedback');
+                        $('#description').parent('.form-group').addClass('has-success').removeClass('has-error has-feedback');
+                        $("#retrieveAlert").removeClass('alert-warning').addClass('alert-success').text('Title and Description retrieved. Submit as is or change info.').show();
+                    }
+                }
+            }
+        });	
+    },
+    "click .js-clear-form":function(event){
+        $('#title').val("").parent('.form-group').removeClass('has-success').removeClass('has-error has-feedback');
+        $('#description').val("").parent('.form-group').removeClass('has-success').removeClass('has-error has-feedback');
+        $('#url').val("").parent('.form-group').removeClass('has-success').removeClass('has-error has-feedback');
+        $("#retrieveAlert").removeClass('alert-warning').removeClass('alert-success').text('').hide();
+    },
+    "click .close":function(){
+        $('.js-clear-form').click();
+    }
+})
