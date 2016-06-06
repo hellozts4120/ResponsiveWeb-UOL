@@ -1,0 +1,21 @@
+/* CSS declarations go here */
+
+.user_avatar{
+	min-height: 100px;
+	text-align: center;
+
+}
+
+.avatar_img{
+    width: 75px;
+	height: 75px;
+}
+
+.avatar_img_small{
+    width: 25px;
+	height: 25px;
+}
+
+.msg_box {
+    margin: 30px;
+}
