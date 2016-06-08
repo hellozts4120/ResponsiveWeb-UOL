@@ -1,0 +1,116 @@
+<template name="playground">
+
+<br><br><br>
+<!-- Remember - if you want to control functions globaly, don't declare them as var. Just name them. -->
+
+<button class="startButton">DAC</button><br><br>
+
+<br>Track 1		<button class="myButton1">ON</button>
+<button class="myButton2">OFF</button>
+<div id="slider1"><center><b><p style="font-size:60%;">Current Speed: {{sliderVal1}}</p></b></center></div>
+
+<br>Track 2		<button class="myButton3">ON</button>
+<button class="myButton4">OFF</button>
+<div id="slider1"><center><b><p style="font-size:60%;">Current Speed: {{sliderVal2}}</p></b></center></div>
+
+<br>Track 3		<button class="myButton5">ON</button>
+<button class="myButton6">OFF</button>
+<div id="slider1"><center><b><p style="font-size:60%;">Current Speed: {{sliderVal3}}</p></b></center></div>
+
+<br>Track 4		<button class="myButton7">ON</button>
+<button class="myButton8">OFF</button>
+<div id="slider1"><center><b><p style="font-size:60%;">Current Speed: {{sliderVal4}}</p></b></center></div>
+
+<br>Track 5		<button class="myButton9">ON</button>
+<button class="myButton10">OFF</button>
+<div id="slider1"><center><b><p style="font-size:60%;">Current Speed: {{sliderVal5}}</p></b></center></div>
+
+<br>Track 6		<button class="myButton11">ON</button>
+<button class="myButton12">OFF</button>
+<div id="slider1"><center><b><p style="font-size:60%;">Current Speed: {{sliderVal6}}</p></b></center></div>
+
+<br>Track 5		<button class="myButton13">ON</button>
+<button class="myButton14">OFF</button>
+<div id="slider1"><center><b><p style="font-size:60%;">Current Speed: {{sliderVal7}}</p></b></center></div>
+
+<br>Track 5		<button class="myButton15">ON</button>
+<button class="myButton16">OFF</button>
+<div id="slider1"><center><b><p style="font-size:60%;">Current Speed: {{sliderVal8}}</p></b></center></div>
+
+ <br>
+
+ <h2> {{startdac}} {{drums}} {{bass}} {{arp}} {{cymbal}} {{bassdrum1}} {{hihat2}} {{snaredrum1}} {{bassline24bit}} </h2>
+
+
+</template>
+
+<template name="ApplicationLayout">
+  {{> yield "navbar"}}
+  {{> yield "main"}}
+  {{> footer}}
+</template>
+
+<template name="navbar">
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Music Machine</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="playground">Playground</a></li>
+        <li><a href="/help">Help Me</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+
+</template>
+
+
+
+<template name="welcome">
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Welcom to music machine..</h1>
+      <a href="/playground" class="btn btn-info">Enter</a>
+    </div>
+  </div>
+</template>
+
+<template name="help">
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Help Me...</h1>
+      <p>Turn on/off DAC button to play and remix music</p>
+      <p>If you dont listen music, please use google chorme which is highly recommended</P>
+      <p>Even if you dont listen music, make it sure all of the elements are in teh database and use command -MusicMachine.find().fetch()- in your client</p>
+      <p>You can insert missing element by using -  MusicMachine.update({ _id: 'HNaHtwDiCoSzDQudH'}, {$set: {slide7: 10}});- Please change id according to your session. </P>
+      <p> Please make it sure these help steps are in coursera project for developers.</p>
+	 <p> Last but not leaste you can check the following <a href="http://caniuse.com/#feat=audio-api">link</a> either your browser support web api or not</p>
+      <p> Enjoy.............</p> 
+      <a href="/playground" class="btn btn-info">Enter Again... :)</a>
+    </div>
+  </div>
+</template>
+
+<template name="footer">
+
+<!-- navbar  - you will be putting the login functions here -->
+<nav class="navbar navbar-default navbar-inverse navbar-fixed-bottom">
+  <div class="container">
+    <h4>Created By: Tianshu Zhou. This application is a project for Coursera</h4>
+  	</div>
+	</nav>
+
+</template>
